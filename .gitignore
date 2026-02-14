@@ -1,0 +1,7 @@
+.quarto/
+_freeze/
+.ipynb_checkpoints/
+__pycache__/
+notebooks/
+scripts/
+data/
