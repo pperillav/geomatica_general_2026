@@ -1,0 +1,118 @@
+---
+title: "Práctica 01 – Quarto HTML y PDF"
+author: "Pedro Perilla"
+date: today
+lang: es
+number-sections: true
+bibliography: referencias.bib
+format:
+  html:
+    toc: true
+    theme: cosmo
+    code-copy: true
+  pdf:
+    toc: true
+    documentclass: scrreprt
+    geometry:
+      - top=25mm
+      - left=25mm
+      - right=25mm
+      - bottom=25mm
+---
+
+# Contexto General
+
+La geomática combina Sistemas de Información Geográfica (SIG), programación y modelamiento territorial para el análisis espacial avanzado @longley2015.  
+
+En la actualidad, el uso de herramientas computacionales permite automatizar procesos, garantizar reproducibilidad y reducir errores en la gestión de información geoespacial.
+
+Instituciones y software clave:
+
+- [QGIS](https://qgis.org) @qgis  
+- [PROJ](https://proj.org) @proj  
+
+::: {.callout-tip}
+La automatización mediante Python permite replicar análisis espaciales sin depender exclusivamente de interfaces gráficas.
+:::
+
+---
+
+# Procesamiento Geoespacial
+
+El procesamiento geoespacial implica una serie de etapas fundamentales que garantizan la calidad y coherencia de los datos espaciales antes de su análisis final.
+
+::: {.panel-tabset}
+
+## Reproyección
+
+La reproyección transforma los datos a un sistema de referencia espacial común.
+
+```python
+gdf = gdf.to_crs(epsg=9377)
+```
+
+::: {.callout-note}
+Trabajar en diferentes sistemas de referencia puede generar errores en cálculos de distancia, área o superposición espacial.
+:::
+
+## Limpieza Topológica
+
+La validación geométrica asegura que las entidades espaciales no contengan errores estructurales.
+
+```python
+gdf = gdf[gdf.is_valid]
+```
+
+::: {.callout-note}
+La limpieza topológica es esencial antes de realizar operaciones como intersecciones o buffers.
+:::
+
+## Visualización
+
+La representación gráfica permite una inspección preliminar de los datos.
+
+```python
+gdf.plot()
+```
+
+::: {.callout-tip}
+Visualizar los datos antes del análisis final ayuda a detectar inconsistencias espaciales.
+:::
+
+:::
+
+# Ejemplo en Python
+
+A continuación se presenta un flujo básico para cargar y examinar datos espaciales utilizando GeoPandas.
+
+
+```python
+import geopandas as gpd
+import matplotlib.pyplot as plt
+# Cargar datos espaciales
+gdf = gpd.read_file("datos.gpkg")
+# Mostrar las primeras filas
+print(gdf.head())
+```
+
+Este procedimiento permite:
+
+Verificar atributos
+
+Confirmar el sistema de referencia
+
+Analizar la estructura del dataset
+
+::: {.callout-note}
+El archivo datos.gpkg debe encontrarse en el mismo directorio del archivo .qmd o especificar su ruta absoluta.
+:::
+
+# Consideraciones Finales
+
+El uso combinado de SIG y programación fortalece la calidad técnica de los informes geoespaciales.
+
+La integración de Quarto permite generar documentos reproducibles en múltiples formatos (HTML y PDF), facilitando la documentación académica y profesional.
+
+::: {.callout-tip}
+Un informe técnico bien estructurado debe incluir: contexto, metodología, procesamiento, resultados y conclusiones.
+:::

@@ -1,0 +1,66 @@
+---
+title: "Práctica 01 – Quarto HTML"
+author: "Pedro Perilla"
+date: today
+lang: es
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    theme: flatly
+    code-copy: true
+bibliography: referencias.bib
+number-sections: true
+---
+
+# Introducción
+
+La geomática integra métodos computacionales para el análisis espacial y modelamiento territorial @longley2015.
+
+Herramientas fundamentales:
+
+- [QGIS](https://qgis.org) @qgis  
+- [PROJ](https://proj.org) @proj  
+
+---
+
+# Flujo de Trabajo Geomático
+
+::: {.panel-tabset}
+
+## Adquisición
+
+- GNSS  
+- Fotogrametría  
+- Sensores remotos  
+
+## Procesamiento
+
+- Transformación de CRS  
+- Limpieza topológica  
+- Intersecciones espaciales  
+
+## Visualización
+
+- Mapas temáticos  
+- Modelos digitales  
+- Reportes técnicos  
+
+:::
+
+---
+
+# Ejemplo en Python
+
+```python
+# Librerías necesarias
+import geopandas as gpd
+import matplotlib.pyplot as plt
+# Cargar datos espaciales
+gdf = gpd.read_file("datos.gpkg")
+print(gdf.head())
+```
+::: {.callout-note}
+Este bloque de código muestra cómo cargar un archivo geoespacial en Python usando GeoPandas.
+:::
