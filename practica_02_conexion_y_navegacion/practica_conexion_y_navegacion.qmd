@@ -1,0 +1,169 @@
+---
+title: "Práctica – Conexión y Navegación"
+author: "Pedro Perilla"
+date: today
+lang: es
+number-sections: true
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    theme: cosmo
+    code-copy: true
+  pdf:
+    toc: true
+    documentclass: scrreprt
+    longtable: true
+    geometry:
+      - top=25mm
+      - left=25mm
+      - right=25mm
+      - bottom=25mm
+---
+
+# Introducción
+
+La interoperabilidad geográfica permite integrar datos locales y servicios remotos mediante estándares definidos por el Open Geospatial Consortium (OGC), tales como WMS, WFS y WCS.
+
+En esta práctica se evaluó la conexión a servicios oficiales de Colombia y la integración con datos locales, con el fin de validar compatibilidad, capacidades de edición, acceso a atributos y control de simbología en QGIS y ArcGIS Pro.
+
+::: {.callout-note}
+La interoperabilidad garantiza que diferentes plataformas SIG puedan consumir y visualizar información geográfica sin perder coherencia espacial ni semántica.
+:::
+
+
+# Tabla de Fuentes
+
+| Tipo | Nombre | URL / Origen | Archivo Local | Sistema de Coordenadas |
+|------|--------|--------------|---------------|------------------------|
+| WMS | Amenaza Movimientos en Masa – Bogotá D.C. | [Servicio WMS](https://serviciosgis.catastrobogota.gov.co/arcgis/services/emergencias/gestionriesgos/MapServer/WMSServer) | Conexión remota | EPSG:4326 |
+| WFS | Líneas limítrofes de entidades territoriales – IGAC | [Servicio WFS](https://mapas2.igac.gov.co/server/services/limites/limites/MapServer/WFSServer) | Conexión remota | EPSG:9377 |
+| WCS | Ortoimagen Bogotá 2017 – UAECD | [Servicio WCS](https://serviciosgis.catastrobogota.gov.co/arcgis/services/imagenes/Ortho2017/MapServer/WCSServer) | Conexión remota | EPSG:4326 |
+| Shapefile | Cuerpo de Agua – Bogotá D.C | Descargado desde Datos Abiertos Bogotá | CuerpoAgua.shp | EPSG:4326 |
+| GeoTIFF | Ortoimagen Cundinamarca 2021 – IGAC | Descargado desde Colombia en Mapas | Servicio-6982.tif | EPSG:9377 |
+
+::: {.callout-important}
+Los servicios WMS, WFS y WCS se consumen directamente desde el servidor remoto, mientras que el Shapefile y el GeoTIFF corresponden a datos almacenados localmente.
+:::
+
+# Productos Cartográficos
+
+## Mapa 1 – QGIS
+
+![](conexion_navegacion_qgis.pdf)
+
+## Mapa 2 – ArcGIS Pro
+
+![](conexion_navegacion_arcgis.pdf)
+
+
+::: {.callout-tip}
+La exportación en PDF garantiza preservación de escala, simbología y metadatos cartográficos para fines académicos y técnicos.
+:::
+
+# Cuestionario de Análisis
+
+## ¿Qué archivos/servicios permiten la edición de geometrías directamente?
+
+**Respuesta:**
+
+- **Shapefile**
+  - Permite edición directa de geometrías desde el software cliente.
+  - Los cambios se almacenan localmente en los archivos asociados (.shp, .dbf, .shx).
+
+- **WFS**
+  - Permite edición si está habilitado como **WFS-T (Web Feature Service Transaccional)**.
+  - La edición se realiza sobre el servidor remoto.
+
+- **WMS y WCS**
+  - No permiten edición de geometrías.
+  - Entregan información como imagen (WMS) o cobertura raster (WCS).
+
+::: {.callout-note}
+Los servicios raster (WMS y WCS) no contienen geometrías vectoriales editables, por lo que solo permiten visualización o análisis raster.
+:::
+
+
+## ¿Cuáles permiten acceso a la tabla de atributos? Describa tres campos de uno de ellos.
+
+**Respuesta:**
+
+Permiten acceso a tabla de atributos:
+
+- Shapefile  
+- WFS  
+
+No permite acceso:
+
+- WMS (transmite imágenes renderizadas sin estructura tabular asociada).
+
+### Ejemplo: Shapefile “Cuerpo de Agua – Bogotá D.C.”
+
+Campos observados:
+
+- **TIPO**
+  - Clasificación del cuerpo de agua (Río, Canal, Laguna, Humedal, Embalse).
+
+- **NOMBRE**
+  - Nombre oficial del cuerpo hídrico.
+
+- **AREA**
+  - Área del polígono representado.
+
+Estos campos permiten análisis temáticos, clasificación espacial y consultas por atributos.
+
+::: {.callout-tip}
+El acceso a la tabla de atributos es fundamental para realizar consultas espaciales, filtros temáticos y generación de estadísticas.
+:::
+
+
+## ¿En qué casos fue posible cambiar la simbología desde el software cliente?
+
+**Respuesta:**
+
+Fue posible cambiar la simbología en:
+
+- Shapefile  
+- WFS  
+- GeoTIFF  
+- WCS (como raster)
+
+No fue posible en:
+
+- WMS  
+  - La simbología está predefinida en el servidor y solo se consume como imagen.
+
+::: {.callout-note}
+En servicios WMS la representación cartográfica depende completamente del servidor, lo que limita la personalización visual desde el cliente SIG.
+:::
+
+
+## ¿Por qué es preferible usar un WFS sobre un Shapefile descargado en proyectos a largo plazo?
+
+**Respuesta:**
+
+El uso de WFS es preferible porque:
+
+- Permite acceder a datos actualizados en tiempo real.
+- Reduce la duplicación de información local.
+- Garantiza coherencia institucional.
+- Facilita el trabajo colaborativo entre múltiples usuarios.
+
+En contraste:
+
+- El Shapefile es estático.
+- Requiere descargas manuales para actualizar la información.
+- Puede generar inconsistencias si existen múltiples versiones del mismo archivo.
+
+::: {.callout-tip}
+En proyectos institucionales o de larga duración, el uso de servicios interoperables (como WFS) favorece la sostenibilidad y la gestión centralizada de la información.
+:::
+
+# Conclusiones
+
+La práctica permitió validar la interoperabilidad entre datos locales y servicios remotos oficiales de Colombia.
+
+Los servicios WFS demostraron ventajas estratégicas para proyectos institucionales, mientras que los servicios WMS y WCS cumplen funciones de visualización y consulta raster respectivamente.
+
+El uso de estándares OGC garantiza compatibilidad entre diferentes plataformas como QGIS y ArcGIS Pro.

@@ -1,5 +1,5 @@
 ---
-title: "Práctica 01 – Quarto HTML y PDF"
+title: "Test – Quarto HTML y PDF"
 author: "Pedro Perilla"
 date: today
 lang: es
