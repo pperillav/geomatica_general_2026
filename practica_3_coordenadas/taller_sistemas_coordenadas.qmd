@@ -245,16 +245,18 @@ El Origen Nacional reemplaza progresivamente los sistemas antiguos basados en Bo
 
 #### Comparación Técnica
 
+A continuación se presenta una comparación entre el datum antiguo basado en Bogotá 1975 y el marco oficial actual MAGNA-SIRGAS:
+
 ::: {.panel-tabset}
 
-#### Datum Antiguo (Bogotá 1975)
+##### Datum Antiguo (Bogotá 1975)
 
 - Basado en el elipsoide International 1924  
 - Ajustado localmente  
 - No compatible directamente con GNSS moderno  
 - Generaba diferencias métricas frente a sistemas globales  
 
-#### Datum Oficial (MAGNA-SIRGAS)
+##### Datum Oficial (MAGNA-SIRGAS)
 
 - Compatible con sistemas GNSS  
 - Marco geocéntrico  

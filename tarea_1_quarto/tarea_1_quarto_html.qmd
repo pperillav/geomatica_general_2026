@@ -1,5 +1,5 @@
 ---
-title: "Práctica 01 – Quarto HTML"
+title: "Tarea 01 – Quarto HTML"
 author: "Pedro Perilla"
 date: today
 lang: es
