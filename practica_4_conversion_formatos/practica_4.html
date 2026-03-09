@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Pedro Perilla">
+
+<title>Conversión de Formatos (ArcGIS Pro - QGIS)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="practica_4_files/libs/clipboard/clipboard.min.js"></script>
+<script src="practica_4_files/libs/quarto-html/quarto.js"></script>
+<script src="practica_4_files/libs/quarto-html/popper.min.js"></script>
+<script src="practica_4_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="practica_4_files/libs/quarto-html/anchor.min.js"></script>
+<link href="practica_4_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="practica_4_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="practica_4_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="practica_4_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="practica_4_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#contexto-del-taller" id="toc-contexto-del-taller" class="nav-link active" data-scroll-target="#contexto-del-taller"><span class="header-section-number">1</span> Contexto del Taller</a></li>
+  <li><a href="#ejercicio-1-intercambio-de-formatos-para-visualización-web-kml" id="toc-ejercicio-1-intercambio-de-formatos-para-visualización-web-kml" class="nav-link" data-scroll-target="#ejercicio-1-intercambio-de-formatos-para-visualización-web-kml"><span class="header-section-number">2</span> Ejercicio 1 – Intercambio de formatos para visualización web (KML)</a>
+  <ul class="collapse">
+  <li><a href="#exportación-desde-arcgis-pro-map-to-kml" id="toc-exportación-desde-arcgis-pro-map-to-kml" class="nav-link" data-scroll-target="#exportación-desde-arcgis-pro-map-to-kml"><span class="header-section-number">2.1</span> Exportación desde ArcGIS Pro – Map To KML</a>
+  <ul class="collapse">
+  <li><a href="#validación-en-google-earth" id="toc-validación-en-google-earth" class="nav-link" data-scroll-target="#validación-en-google-earth"><span class="header-section-number">2.1.1</span> Validación en Google Earth</a></li>
+  </ul></li>
+  <li><a href="#exportación-desde-arcgis-pro-layer-to-kml" id="toc-exportación-desde-arcgis-pro-layer-to-kml" class="nav-link" data-scroll-target="#exportación-desde-arcgis-pro-layer-to-kml"><span class="header-section-number">2.2</span> Exportación desde ArcGIS Pro – Layer To KML</a>
+  <ul class="collapse">
+  <li><a href="#validación-del-resultado" id="toc-validación-del-resultado" class="nav-link" data-scroll-target="#validación-del-resultado"><span class="header-section-number">2.2.1</span> Validación del resultado</a></li>
+  </ul></li>
+  <li><a href="#exportación-desde-qgis" id="toc-exportación-desde-qgis" class="nav-link" data-scroll-target="#exportación-desde-qgis"><span class="header-section-number">2.3</span> Exportación desde QGIS</a>
+  <ul class="collapse">
+  <li><a href="#validación-del-archivo-exportado" id="toc-validación-del-archivo-exportado" class="nav-link" data-scroll-target="#validación-del-archivo-exportado"><span class="header-section-number">2.3.1</span> Validación del archivo exportado</a></li>
+  </ul></li>
+  <li><a href="#sobre-el-ejercicio-1-sistemas-de-coordenadas---explicación-y-respuesta" id="toc-sobre-el-ejercicio-1-sistemas-de-coordenadas---explicación-y-respuesta" class="nav-link" data-scroll-target="#sobre-el-ejercicio-1-sistemas-de-coordenadas---explicación-y-respuesta"><span class="header-section-number">2.4</span> Sobre el Ejercicio 1 (Sistemas de Coordenadas) - Explicación y Respuesta</a></li>
+  </ul></li>
+  <li><a href="#ejercicio-2-etl-espacial-y-carga-en-postgis" id="toc-ejercicio-2-etl-espacial-y-carga-en-postgis" class="nav-link" data-scroll-target="#ejercicio-2-etl-espacial-y-carga-en-postgis"><span class="header-section-number">3</span> Ejercicio 2 – ETL Espacial y carga en PostGIS</a>
+  <ul class="collapse">
+  <li><a href="#datos-de-entrada" id="toc-datos-de-entrada" class="nav-link" data-scroll-target="#datos-de-entrada"><span class="header-section-number">3.1</span> Datos de entrada</a></li>
+  <li><a href="#filtro-de-atributo" id="toc-filtro-de-atributo" class="nav-link" data-scroll-target="#filtro-de-atributo"><span class="header-section-number">3.2</span> Filtro de Atributo</a></li>
+  <li><a href="#creación-del-buffer-de-40-km" id="toc-creación-del-buffer-de-40-km" class="nav-link" data-scroll-target="#creación-del-buffer-de-40-km"><span class="header-section-number">3.3</span> Creación del Buffer de 40 km</a></li>
+  <li><a href="#filtro-espacial" id="toc-filtro-espacial" class="nav-link" data-scroll-target="#filtro-espacial"><span class="header-section-number">3.4</span> Filtro Espacial</a></li>
+  <li><a href="#carga-final-en-postgis" id="toc-carga-final-en-postgis" class="nav-link" data-scroll-target="#carga-final-en-postgis"><span class="header-section-number">3.5</span> Carga final en PostGIS</a></li>
+  <li><a href="#sobre-el-ejercicio-2-eficiencia-etl---reflexión" id="toc-sobre-el-ejercicio-2-eficiencia-etl---reflexión" class="nav-link" data-scroll-target="#sobre-el-ejercicio-2-eficiencia-etl---reflexión"><span class="header-section-number">3.6</span> Sobre el Ejercicio 2 (Eficiencia ETL) - Reflexión</a></li>
+  </ul></li>
+  <li><a href="#reflexión-sobre-interoperabilidad" id="toc-reflexión-sobre-interoperabilidad" class="nav-link" data-scroll-target="#reflexión-sobre-interoperabilidad"><span class="header-section-number">4</span> Reflexión sobre Interoperabilidad</a></li>
+  <li><a href="#conclusiones" id="toc-conclusiones" class="nav-link" data-scroll-target="#conclusiones"><span class="header-section-number">5</span> Conclusiones</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Otros formatos</h2><ul><li><a href="practica_4.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Conversión de Formatos (ArcGIS Pro - QGIS)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor/a</div>
+    <div class="quarto-title-meta-contents">
+             <p>Pedro Perilla </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Fecha de publicación</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">9 de marzo de 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="contexto-del-taller" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Contexto del Taller</h1>
+<p>La interoperabilidad entre plataformas SIG es un aspecto fundamental en los flujos de trabajo geomáticos actuales.<br>
+En proyectos reales es común trabajar con diferentes formatos de datos, sistemas de referencia espacial y motores de bases de datos geográficas.</p>
+<p>En esta evaluación se desarrollaron dos ejercicios enfocados en:</p>
+<ul>
+<li>Conversión de formatos para visualización web.</li>
+<li>Procesos ETL espaciales para carga de datos en bases de datos geográficas.</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>El manejo adecuado de formatos y sistemas de coordenadas garantiza la correcta interoperabilidad entre plataformas SIG.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="ejercicio-1-intercambio-de-formatos-para-visualización-web-kml" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Ejercicio 1 – Intercambio de formatos para visualización web (KML)</h1>
+<p>El formato <strong>KML (Keyhole Markup Language)</strong> es un estándar utilizado para visualizar información geográfica en plataformas como Google Earth.</p>
+<p>Este formato exige que los datos se encuentren en coordenadas geográficas <strong>WGS84 (EPSG:4326)</strong>, ya que el visor no realiza reproyección automática.</p>
+<p>El objetivo del ejercicio fue exportar capas vectoriales a formato <strong>KML/KMZ</strong> asegurando que el sistema de coordenadas fuera compatible.</p>
+<hr>
+<section id="exportación-desde-arcgis-pro-map-to-kml" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="exportación-desde-arcgis-pro-map-to-kml"><span class="header-section-number">2.1</span> Exportación desde ArcGIS Pro – Map To KML</h2>
+<p>Se utilizó la herramienta:</p>
+<pre><code>Conversion Tools → To KML → Map To KML</code></pre>
+<p>Esta herramienta exporta todas las capas visibles del mapa a un archivo KMZ.</p>
+<div id="fig-map-to-kml" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-map-to-kml-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/map_to_kml.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map-to-kml-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: Exportación usando Map To KML
+</figcaption>
+</figure>
+</div>
+<hr>
+<section id="validación-en-google-earth" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="validación-en-google-earth"><span class="header-section-number">2.1.1</span> Validación en Google Earth</h3>
+<p>El archivo KMZ generado se abrió en Google Earth para verificar que las entidades se ubicaran correctamente sobre la superficie terrestre.</p>
+<div id="fig-validacion-map" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-validacion-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/validacion_map_to_kml.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-validacion-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2: Validación del archivo KMZ en Google Earth
+</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+</section>
+<section id="exportación-desde-arcgis-pro-layer-to-kml" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="exportación-desde-arcgis-pro-layer-to-kml"><span class="header-section-number">2.2</span> Exportación desde ArcGIS Pro – Layer To KML</h2>
+<p>También se utilizó la herramienta:</p>
+<pre><code>Conversion Tools → To KML → Layer To KML</code></pre>
+<p>Esta herramienta exporta únicamente una capa específica.</p>
+<p>En la pestaña <strong>Environments</strong> se verificó que el sistema de salida fuera:</p>
+<pre><code>GCS_WGS_1984</code></pre>
+<div id="fig-layer-kml" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-layer-kml-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/layer_to_kml.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-layer-kml-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;3: Exportación usando Layer To KML
+</figcaption>
+</figure>
+</div>
+<hr>
+<section id="validación-del-resultado" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="validación-del-resultado"><span class="header-section-number">2.2.1</span> Validación del resultado</h3>
+<div id="fig-validacion-layer" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-validacion-layer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/validacion_layer_to_kml.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-validacion-layer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;4: Validación del archivo Layer To KML
+</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+</section>
+<section id="exportación-desde-qgis" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="exportación-desde-qgis"><span class="header-section-number">2.3</span> Exportación desde QGIS</h2>
+<p>En QGIS se utilizó el menú contextual de la capa:</p>
+<pre><code>Click derecho → Export → Save Features As</code></pre>
+<p>Configuración aplicada:</p>
+<ul>
+<li>Formato: <strong>KML</strong></li>
+<li>CRS: <strong>EPSG:4326 – WGS 84</strong></li>
+</ul>
+<div id="fig-qgis-kml" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-qgis-kml-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/qgis_to_kml.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-qgis-kml-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5: Exportación de capa a formato KML desde QGIS
+</figcaption>
+</figure>
+</div>
+<hr>
+<section id="validación-del-archivo-exportado" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="validación-del-archivo-exportado"><span class="header-section-number">2.3.1</span> Validación del archivo exportado</h3>
+<div id="fig-validacion-qgis" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-validacion-qgis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/validación_qgis_to_kml_validacion.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-validacion-qgis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;6: Validación del archivo KML exportado desde QGIS
+</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+</section>
+<section id="sobre-el-ejercicio-1-sistemas-de-coordenadas---explicación-y-respuesta" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="sobre-el-ejercicio-1-sistemas-de-coordenadas---explicación-y-respuesta"><span class="header-section-number">2.4</span> Sobre el Ejercicio 1 (Sistemas de Coordenadas) - Explicación y Respuesta</h2>
+<p>Intentar abrir un archivo KML con coordenadas planas en metros es un error común.<br>
+Esto sucede porque el formato KML está diseñado para trabajar exclusivamente con coordenadas geográficas (latitud y longitud) en el sistema <strong>WGS84</strong>.</p>
+<p>Si un archivo contiene coordenadas proyectadas, como por ejemplo UTM o sistemas planos nacionales, el visor no puede interpretarlas correctamente.</p>
+<p>Decimos que <strong>Google Earth no tiene proyección al vuelo</strong> porque el software no convierte automáticamente entre distintos sistemas de coordenadas.</p>
+<p>Como resultado, cuando un archivo con coordenadas proyectadas se abre directamente en Google Earth, las entidades aparecen desplazadas o en ubicaciones incorrectas.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Por esta razón es obligatorio reproyectar los datos a WGS84 antes de exportarlos al formato KML.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="ejercicio-2-etl-espacial-y-carga-en-postgis" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Ejercicio 2 – ETL Espacial y carga en PostGIS</h1>
+<p>Este ejercicio simuló un flujo de trabajo típico de <strong>ETL espacial (Extract, Transform, Load)</strong>.</p>
+<p>El objetivo fue aplicar reglas de negocio antes de cargar los datos en una base de datos espacial basada en PostgreSQL/PostGIS.</p>
+<hr>
+<section id="datos-de-entrada" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="datos-de-entrada"><span class="header-section-number">3.1</span> Datos de entrada</h2>
+<p>Se utilizaron los siguientes archivos:</p>
+<ul>
+<li><code>MUNICIPIOS_ISLA_WGS84.shp</code></li>
+<li><code>coordenadas.kml</code></li>
+</ul>
+<p>El campo utilizado para aplicar el filtro de atributos fue:</p>
+<pre><code>NMG</code></pre>
+<p>que contiene el nombre del municipio.</p>
+<hr>
+</section>
+<section id="filtro-de-atributo" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="filtro-de-atributo"><span class="header-section-number">3.2</span> Filtro de Atributo</h2>
+<p>La primera regla consistió en eliminar municipios con <strong>nombres compuestos</strong>.</p>
+<p>Se aplicó una expresión que selecciona únicamente registros cuyo nombre <strong>no contiene espacios</strong>.</p>
+<p>Expresión utilizada:</p>
+<pre><code>"NMG" NOT LIKE '% %'</code></pre>
+<div id="fig-filtro-atributo" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-filtro-atributo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/filtro_atributo.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-filtro-atributo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;7: Filtro de atributo aplicado al campo NMG
+</figcaption>
+</figure>
+</div>
+<p>Este filtro permite reducir el número de registros antes de realizar análisis espaciales.</p>
+<hr>
+</section>
+<section id="creación-del-buffer-de-40-km" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="creación-del-buffer-de-40-km"><span class="header-section-number">3.3</span> Creación del Buffer de 40 km</h2>
+<p>A partir de los puntos contenidos en <code>coordenadas.kml</code> se generó un buffer de 40 km.</p>
+<p>Herramienta utilizada:</p>
+<pre><code>Vector → Geoprocesamiento → Buffer</code></pre>
+<p>Parámetro aplicado:</p>
+<pre><code>40 kilómetros</code></pre>
+<div id="fig-buffer" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-buffer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/buffer40km.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-buffer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;8: Generación de buffer de 40 km
+</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="filtro-espacial" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="filtro-espacial"><span class="header-section-number">3.4</span> Filtro Espacial</h2>
+<p>Posteriormente se aplicó un filtro espacial para seleccionar únicamente los municipios que se encuentran dentro del buffer generado.</p>
+<p>Herramienta utilizada:</p>
+<pre><code>Seleccionar por localización -&gt; intersecan</code></pre>
+<div id="fig-filtro-espacial" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-filtro-espacial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/filtro_espacial.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-filtro-espacial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;9: Selección espacial de municipios
+</figcaption>
+</figure>
+</div>
+<p>Resultado de la selección espacial:</p>
+<div id="fig-mpios-buffer" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mpios-buffer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/mpios_buffer40km.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mpios-buffer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;10: Municipios dentro del buffer de 40 km
+</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="carga-final-en-postgis" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="carga-final-en-postgis"><span class="header-section-number">3.5</span> Carga final en PostGIS</h2>
+<p>Los municipios que cumplieron ambas condiciones fueron cargados en la base de datos espacial mediante el <strong>DB Manager de QGIS</strong>.</p>
+<p>Configuración utilizada:</p>
+<pre><code>Schema: public
+Tabla: mpios_kml</code></pre>
+<p>Tabla final cargada en PostGIS:</p>
+<div id="fig-postgis-final" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-postgis-final-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/registros_mpios_kml_postgis.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-postgis-final-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;11: Tabla final mpios_kml en PostGIS
+</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="sobre-el-ejercicio-2-eficiencia-etl---reflexión" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="sobre-el-ejercicio-2-eficiencia-etl---reflexión"><span class="header-section-number">3.6</span> Sobre el Ejercicio 2 (Eficiencia ETL) - Reflexión</h2>
+<p>Para este proceso es más eficiente aplicar primero el <strong>filtro de atributos</strong>.</p>
+<p>Las operaciones de comparación de texto requieren pocos recursos computacionales y permiten reducir rápidamente el número de registros.</p>
+<p>En cambio, las operaciones espaciales como intersecciones o buffers requieren mayor capacidad de cálculo debido a la complejidad de las geometrías.</p>
+<p>Al reducir previamente el número de entidades mediante un filtro de atributos, se disminuye la cantidad de geometrías que deben ser procesadas en el análisis espacial.</p>
+<p>Esto genera beneficios importantes:</p>
+<ul>
+<li>menor consumo de memoria</li>
+<li>menor tiempo de procesamiento</li>
+<li>menor carga computacional</li>
+</ul>
+<p>Por esta razón, aplicar primero el filtro de atributos optimiza el flujo ETL.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En procesos ETL espaciales es recomendable aplicar primero filtros simples antes de ejecutar análisis espaciales complejos.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="reflexión-sobre-interoperabilidad" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Reflexión sobre Interoperabilidad</h1>
+<p>Durante el proceso de carga de datos en PostgreSQL/PostGIS se observó que ArcGIS Pro presenta algunas restricciones relacionadas con la gestión de esquemas dentro de la base de datos.</p>
+<p>En particular, ArcGIS suele requerir estructuras específicas y configuraciones adicionales para trabajar con PostgreSQL.</p>
+<p>En contraste, QGIS ofrece una integración más flexible con bases de datos espaciales.</p>
+<p>El uso de QGIS como herramienta intermedia facilita la carga de datos porque:</p>
+<ul>
+<li>permite importar archivos espaciales directamente a PostGIS</li>
+<li>detecta automáticamente geometrías y sistemas de coordenadas</li>
+<li>facilita la creación de índices espaciales</li>
+<li>permite administrar esquemas sin restricciones adicionales</li>
+</ul>
+<p>Por esta razón, QGIS funciona como un <strong>puente de interoperabilidad</strong> entre diferentes formatos geoespaciales y motores de base de datos.</p>
+<hr>
+</section>
+<section id="conclusiones" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Conclusiones</h1>
+<ol type="1">
+<li><p>La correcta conversión de formatos geoespaciales requiere prestar atención al sistema de referencia espacial utilizado.</p></li>
+<li><p>El formato KML exige que los datos estén en coordenadas geográficas WGS84 para poder visualizarse correctamente en Google Earth.</p></li>
+<li><p>Los procesos ETL espaciales permiten aplicar reglas de negocio antes de cargar los datos en una base de datos geográfica.</p></li>
+<li><p>Aplicar primero filtros de atributos mejora la eficiencia computacional al reducir el número de entidades involucradas en análisis espaciales.</p></li>
+<li><p>Las bases de datos espaciales como PostgreSQL/PostGIS permiten almacenar y gestionar grandes volúmenes de información geográfica de forma eficiente.</p></li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Antes de realizar cualquier análisis espacial siempre se debe verificar el sistema de referencia (EPSG) de los datos.</p>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
